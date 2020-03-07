@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row ">
+    {% include 'service/category.html' with object_list=object_list page_obj=page_obj %}
+    {% if is_paginated %}
+        {% include 'include_html/pagination.html' with page_obj=page_obj %}
+    {% endif %}
+    </div>
+{% endblock %}
+
+
+{#{% load static %}#}
+{#<!doctype html>#}
+{#<html lang="en">#}
+{#<head>#}
+{#    {% block css %}{% endblock %}#}
+{#    {% include 'include_html/css.html' %}#}
+{#    <title>FastPick.xyz || Online Buy & Rent Solution</title>#}
+{#    <style>#}
+{#        .logoimg {#}
+{#            padding: 5px 0 0 0;#}
+{#        }#}
+{#    </style>#}
+{#</head>#}
+{#<body>#}
+{#<br>#}
+{#<marquee behavior="alternate" ><b style="background-color:#ff9900 ">-----This Site is underdevelopment-----</b></marquee>#}
+{#<br>#}
+{##}
+{#<div class="container-fluid bg-light">#}
+{#    <div class="container">#}
+{#        {% for message in messages %}#}
+{#            <div class="alert {{ message.tags }}" role="alert">#}
+{#                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span>#}
+{#                </button>#}
+{#                {{ message }}#}
+{#            </div>#}
+{#        {% endfor %}#}
+{#        {% include 'include_html/head.html' %}#}
+{#       <div class="row center">#}
+{##}
+{#        <div class="col-sm-2"></div>#}
+{#        <div class="col-sm-8 py-4 ">#}
+{#            <form action="{% url 'search' %}" method="GET">#}
+{#                <div class="input-group mb-3 ">#}
+{#                    <input required style="border-color:#ff9900;" type="text" class="form-control" name="q" id="search" placeholder="">#}
+{#                    <div class="input-group-append">#}
+{#                        <button style="background-color:#ffa31a;color: black;border-color: #ff9900" class="btn"#}
+{#                                type="submit">খুঁজুন#}
+{#                        </button>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </form>#}
+{#            <a href=""><p class="text-center"> সব বই দেখুন</p></a>#}
+{#        </div>#}
+{#        <div class="col-sm-2"></div>#}
+{#    </div>#}
+{#    </div>#}
+{#{% include 'include_html/js.html' %}#}
+{#</div>#}
+{##}
+{#    <script>#}
+{#        superplaceholder({#}
+{#            el: search,#}
+{#            sentences: ['Search by Authors (ex. বুদ্ধদেব গুহ, জহির রায়হান)', 'Search by Publishers (ex. মুক্তদেশ প্রকাশন, বাতিঘর প্রকাশনী)',#}
+{#                'Search by Books (ex. টাইম ম্যানেজমেন্ট, সত্যকথন)', 'Search by Books Type (ex.থ্রিল, রোমান্টিক)'],#}
+{#            options: {#}
+{#                loop: true,#}
+{#                letterDelay: 100, // milliseconds#}
+{##}
+{#                // delay between sentences (in milliseconds)#}
+{#                sentenceDelay: 1000,#}
+{##}
+{#                // should start on input focus. Set false to autostart#}
+{#                startOnFocus: true,#}
+{##}
+{#                // loop through passed sentences#}
+{#                loop: true,#}
+{##}
+{#                // shuffle the passed sentences#}
+{#                shuffle: false,#}
+{##}
+{#                // show cursor#}
+{#                showCursor: true,#}
+{##}
+{#                // cursor character#}
+{#                cursor: '|'#}
+{#            }#}
+{#        })#}
+{#    </script>#}
+{#<script>#}
+{#    window.setTimeout(function () {#}
+{#        $(".alert").fadeTo(500, 0).slideUp(500, function () {#}
+{#            $(this).remove();#}
+{#            console.log("De")#}
+{#        });#}
+{#    }, 3000);#}
+{#</script>#}
+{#{% block js %}{% endblock %}#}
+{#</body>#}
+{#</html>#}

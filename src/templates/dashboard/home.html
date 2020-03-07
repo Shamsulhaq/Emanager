@@ -1,0 +1,41 @@
+{% extends 'dashboard/base/base.html' %}
+{% load static %}
+{% block content %}
+    <div class="row ">
+        <div class="col-lg col-sm-12 col-md-12">
+            <div class="card" style="width: 18rem;">
+                <div class="card-header {% if billing_obj.is_verify %} bg-success {% else %} bg-warning {% endif %}">
+                    Account Info
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Full Name: {{ billing_obj.full_name }}</li>
+                    <li class="list-group-item">Email: {{ billing_obj.email }}</li>
+                {% if billing_obj.phone is None %}
+                    <li class="list-group-item bg-warning"><a href="{% url 'db-account-url' %}">Add Phone To Create Order:</a></li>
+                {% else %}
+                    <li class="list-group-item">Phone: {{ billing_obj.phone }}</li>
+                {% endif %}
+                    <li class="list-group-item">NID: {{ billing_obj.nid }}</li>
+                    <li class="list-group-item">Verify: {% if billing_obj.is_verify %} <i class="fas fa-check-circle"></i>
+                    {% else %}<i class="fas fa-ban"></i>{% endif %}</li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-lg col-sm-12 col-md-12">
+            <div class="card" style="width: 18rem;">
+                <div class="card-header ">
+                    Order Info
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">On Process order: {{ on_process_order.count }}</li>
+                    <li class="list-group-item">Pending order: {{ pending_order_obj.count }}</li>
+                    <li class="list-group-item">Done order: {{ done_order_obj.count }}</li>
+                    <li class="list-group-item">Total Order: {{ order_obj.count }}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+

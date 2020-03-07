@@ -1,0 +1,82 @@
+{% load static %}
+{% load crispy_forms_tags %}
+<!doctype html>
+<html lang="en">
+<head>
+
+    {% include 'include_html/css.html' %}
+    <title>Order Admin</title>
+</head>
+<body>
+<div class="container">
+    {% for message in messages %}
+
+        <div class="alert {{ message.tags }}" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                    aria-hidden="true">&times;</span>
+            </button>
+            {{ message }}
+        </div>
+
+    {% endfor %}
+</div>
+<section>
+    <nav class="navbar navbar-light bg-light justify-content-between mt-1">
+        <div class="container">
+            <a href="{% url 'dashboard_home' %}" class="navbar-brand"><img width="80px"
+                                                                           src="{% static 'img/logo.png' %}"/></a>
+            {% if request.user.is_authenticated %}
+                <section class="form-inline my-2 my-lg-0">
+                    <b class="lead">{{ request.user.full_name }}  </b>
+                    <a href="{% url 'get_logout' %}" class="cancel-link"> Logout?</a>
+                </section>
+            {% endif %}
+        </div>
+    </nav>
+</section>
+<hr>
+{% url 'done_order_url' as done_order_url %}
+{% url 'pending_order_url' as pending_order_url %}
+{% url 'admin_process_order_url' as admin_process_order_url %}
+{% url 'order_admin_index_url' as order_admin_index_url %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-3 col-md-4 col-sm-12 ">
+            <div class="card m-2">
+                <div class="card-header">
+                    MY ACCOUNT
+                </div>
+                <ul class="list-group list-group-flush border">
+                    <li class="list-group-item"><a href="{{ logout_url }}">Logout</a></li>
+                    <li class="list-group-item {% if request.path == dashboard_home %}bg-light{% endif %}"><a
+                            href="{{ dashboard_home }}">Account DashBoard</a></li>
+                    <li class="list-group-item {% if request.path == account_url %}bg-light{% endif %}"><a
+                            href="{{ account_url }}">Account Information</a></li>
+                    <li class="list-group-item {% if request.path == address_url %}bg-light{% endif %}"><a
+                            href="{{ address_url }}">Address Book</a></li>
+                    <li class="list-group-item {% if request.path == all_order_url %}bg-light{% endif %}"><a
+                            href="{{ all_order_url }}">My Orders</a></li>
+                    <li class="list-group-item {% if request.path == all_rentr_url %}bg-light{% endif %}"><a
+                            href="{{ all_rentr_url }}">My Rents</a></li>
+                    <li class="list-group-item {% if request.path == password_change %}bg-light{% endif %}"><a
+                            href="{{ password_change }}">Password Change</a></li>
+                    <li class="list-group-item "><a
+                            href="{% url 'book-list-view-url' %}">Shopping Continue</a></li>
+
+                </ul>
+            </div>
+        </div>
+        <div class="col-lg-9 col-md-8 col-sm-12">
+
+            {% block content %}
+            {% endblock %}
+
+        </div>
+
+    </div>
+</div>
+</div>
+{% include 'include_html/js_file.html' %}
+</body>
+
+</html>

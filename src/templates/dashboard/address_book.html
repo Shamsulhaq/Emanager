@@ -1,0 +1,24 @@
+{% extends 'dashboard/base/base.html' %}
+{% block content %}
+    <div class="col bg-light >
+    {% if address_obj %}
+        <div class="col bg-light">
+            <table class="table table-striped">
+                <tbody>
+                {% for obj in address_obj.all %}
+                    <tr>
+                        <td>
+                            <p>{{ obj.get_address_type_display }}</p>
+                            {{ obj.get_address }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            NO Order Found!
+
+
+        </div>
+    {% endif %}
+    </div>
+{% endblock %}

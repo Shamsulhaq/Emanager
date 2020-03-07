@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    {% block css %}
+        <title>FastPick | {{ title }}</title>
+    {% endblock %}
+    <div class="container">
+
+        <div class="row border text-center">
+            <div class="col-sm-12 col-md-5 border">
+            <br>
+                {% if object.image %}
+                    <a href=""><img width="360px" height="240px" src="{{ object.image.url }}"></a>
+
+                {% else %}
+                    <a href=""><img width="360px" height="240px" src="{% static 'img/book_image.png' %}"></a>
+                {% endif %}
+
+            </div>
+            <div class="col-sm-12 col-md-7 ">
+                <br>
+
+                <h3 class="text-primary px-5 py-2">{{ object.name }}</h3>
+{#                <h4 class="text-primary px-5 py-2">#}
+{#                    {% for category in object.category.all %}#}
+{#                        <a href="">#}
+{#                            {{ category }}{% if not forloop.last %},{% endif %}</a>#}
+{#                    {% endfor %}#}
+{#                </h4>#}
+                <p class="text-info"><b class="h5">BDT {{ object.price }} </b> {% if object.regular_price == 0 %}
+                {% else %}
+                    <del>BDT {{ object.regular_price }}</del> {% endif %}
+                    {% if object.get_discount is not None %}{{ object.get_discount }} Off{% endif %}
+                </p>
+{#                {% if object.is_rent_available %}#}
+{#                    <p class="text-primary"><b class="text-body">Rent Charge:</b>#}
+{#                        BDT {{ object.rent_charge }}</p></p>#}
+{#                {% endif %}#}
+                <p class="text-primary"><b class="text-body">Category:</b>
+                    {% for category in object.category.all %}
+                        <a
+                                href="{% url 'service-list-view-url' slug=category.slug %}">
+                            {{ category }}{% if not forloop.last %},{% endif %}</a>
+                    {% endfor %}
+                </p>
+                <div class="col-sm mx-3 my-4 ">
+                    Total Hire: ({{ object.orders }})
+                    times
+{#                    {% include 'book/cart_update.html' with object=object next_url=request.build_absolute_uri %}#}
+
+                </div>
+{#            {% if object.is_rent_available %}#}
+                <div class="col-sm mx-3 my-4 ">
+                    <a href="{% url 'service-hire-view-url' id=object.id %}" class=" btn btn-lg btn-success" type="submit">Hire</a>
+                </div>
+{#            {% endif %}#}
+
+                <br>
+            </div>
+
+        </div>
+        <br>
+    {% if object.descriptions %}
+        <div class="row border justify-content-center">
+            <div class="col-sm-12">
+
+                <h4 class="text-info"> Service Details:</h4>
+
+                <p>{{ object.descriptions }}</p>
+
+
+{#                {% include 'book/table/info_table.html' with object=object %}#}
+            </div>
+            {% endif %}
+            {#            <div class="col-sm-12 text-center bg-light ">#}
+            {#                <hr>#}
+            {#                <p><div class="fb-like" data-href="{{ request.build_absolute_uri }}" data-layout="standard"#}
+            {#                 data-action="like" data-size="small" data-show-faces="true" data-share="true"></div></p>#}
+            {#                <p><div class="fb-comments" data-href="{{ request.build_absolute_uri }}" data-numposts="5"></div></p>#}
+            {#            </div>#}
+        </div>
+    </div>
+{% endblock %}

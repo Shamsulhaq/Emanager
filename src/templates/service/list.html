@@ -1,0 +1,43 @@
+{% load static %}
+{% if object_list.exists %}
+    <div class="container">
+        <div class="row">
+            {% for obj in object_list %}
+                <div class="col-md-3 col-sm-6">
+                    <div class="product-grid4">
+                        <div class="product-image4">
+                            <a href="{{ obj.get_absolute_url }}">
+                                {% if obj.image %}
+                                    <img class="pic-1" src="{{ obj.image.url }}">
+                                {% else %}
+                                    <img class="pic-1" src="{% static 'img/book_image.png' %}">
+                                {% endif %}
+                            </a>
+                            <span class="product-new-label">{% if obj.is_old %} Old {% else %}
+                                New {% endif %}</span>
+                            {% if obj.get_discount %}
+                                <span class="product-discount-label">{{ obj.get_discount }}</span>
+                            {% endif %}
+                        </div>
+                        <div class="product-content">
+                            <h3 class="title"><a href="{{ obj.get_absolute_url }}">{{ obj.name }}</a></h3>
+                            <div class="price">
+                                {{ obj.price }} ৳
+                                {% if obj.get_discount %}
+                                    <span>{{ obj.regular_price }}৳</span>
+                                {% endif %}
+                            </div>
+                            <a href="{% url 'service-hire-view-url' id=obj.id %}" class=" btn btn-lg btn-success"
+                               type="submit">Hire</a>
+
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+{% else %}
+    <p class="text-center">Service List is Empty </p>
+{% endif %}

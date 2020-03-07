@@ -1,0 +1,162 @@
+{% extends 'dashboard/base/base.html' %}
+{% load static %}
+{% block css %}
+    <title>FastPick|Dashboard</title>
+{% endblock %}
+{% block content %}
+    {% url 'done-order-view-url' as order_done_url %}
+    {% url 'pending-order-view-url' as order_pending_url %}
+    {% url 'on-process-order-view-url' as order_on_process_url %}
+    {% url 'all-order-view-url' as all_order_url %}
+
+    <div class="col bg-light mt-2">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link {% if request.path == order_done_url %}active{% endif %}"
+                   href="{{ order_done_url }}">Completed Order</a></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {% if request.path == order_pending_url %}active{% endif %}"
+                   href="{{ order_pending_url }}">Pending Order</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {% if request.path == order_on_process_url %}active{% endif %}"
+                   href="{{ order_on_process_url }}">on Process Order</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {% if request.path == all_order_url %}active{% endif %}"
+                   href="{{ all_order_url }}">All Order</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="col bg-light">
+        {% if object %}
+            <table class="table table-hover " style="cursor: pointer;">
+                <thead>
+                <th>Order #</th>
+                <th>Service Name</th>
+                <th>Date</th>
+                <th>Expert Name</th>
+                <th>Service Fee</th>
+                <th>Status</th>
+                </thead>
+                <tbody>
+                {% for order in object %}
+
+                    <tr onclick="window.location.href='{% url 'order-info-view-url' id=order.id %}'">
+                        <td>{{ order.order_id }}</td>
+                        <td>{{ order.service }}</td>
+                        <td>{{ order.timestamp|date }}</td>
+                        <td>{{ order.expert.name }}</td>
+                        <td>{{ order.price }} Tk</td>
+                        <td>{{ order.get_status_display }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% elif obj %}
+            <table class="table table-striped">
+                <tbody>
+                {% if obj.status == 'create' or obj.status == 'paid' %}
+                    <tr>
+                        <td colspan="1"></td>
+                        <td>{% if obj.status == 'create' %}
+                            <b class="text-danger">Pleas Make a Payment for this order confirm [
+                                <a href="#" data-toggle="modal"
+                                   data-target="#exampleModalLong">
+                                    Make Payment
+                                </a>
+                                ]</b>
+                            {#                            {% include 'carts/success.html' with object=obj %}#}
+                        {% elif obj.status == 'paid' %}
+                            <b class="text-info">Please Wait a little bit time to receive Books</b>
+                        {% endif %}
+
+                        </td>
+                    </tr>
+                {% endif %}
+                <tr>
+                    <td style="background-color:#aaa;"><b>Order #:</b></td>
+                    <td>{{ obj.order_id }}</td>
+                </tr>
+                <tr>
+                    <td style="background-color:#aaa;"><b>Service Name:</b></td>
+                    <td>{{ obj.service }}</td>
+                </tr>
+
+                <tr>
+                    <td style="background-color:#aaa;"><b>Service Delivery Address:</b></td>
+                    <td>{{ obj.get_address }}</td>
+                </tr>
+
+                <tr>
+                    <td style="background-color:#aaa;"><b>Expert Name</b></td>
+                    <td>{{ obj.expert }} ({{ obj.expert.designation }})</td>
+                </tr>
+                <tr>
+                    <td style="background-color:#aaa;"><b>Expert Phone</b></td>
+                    <td>{{ obj.expert.phone }}</td>
+                </tr>
+                <tr>
+                    <td style="background-color:#aaa;"><b>Expert NID</b></td>
+                    <td>{{ obj.expert.nid }}</td>
+                </tr>
+                <tr>
+                    <td style="background-color:#aaa;"><b>Service Fees:</b></td>
+                    <td>{{ obj.price }} Tk</td>
+                </tr>
+                </tbody>
+
+            </table>
+        {% else %}
+            NO Order Found!
+        {% endif %}
+
+
+    </div>
+    {% if object.has_other_pages %}
+        {% include 'include_html/pagination.html' with page_obj=object %}
+    {% endif %}
+
+    <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+         aria-hidden="true">
+        <div class="modal-dialog font-weight-normal" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle"><img width="80px"
+                                                                            src="{% static 'img/logo.png' %}"/>Payment
+                        Method</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p class="lead-1">Rocket Payment</p>
+                    <ul>
+                        <li>Dial *322#</li>
+                        <li>Select Payment option 1</li>
+                        <li>Select Bill pay option 1</li>
+                        <li>Write Biller ID "78659"</li>
+                        <li>Write Order ID in Bill Number Box "{{ obj.order_id }}"</li>
+                        <li>Write Your Amount "{{ obj.total }}"</li>
+                        <li>Write your Secret PIN (XXXX)</li>
+                        <li>You will get a confirmation SMS</li>
+                    </ul>
+                    <p class="lead">After Payment</p>
+                    <hr>
+                    {% if obj %}
+                        {#                        {% url 'payment_request_url' id=obj.order_id %}#}
+                        <a href="" class="lead">Click Hear</a>
+                    {% endif %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+

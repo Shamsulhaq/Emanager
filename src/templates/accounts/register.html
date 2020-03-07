@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-6 justify-content-lg-center align-content-lg-center border">
+            <h1><b>Registration</b></h1>
+            <form method="POST">{% csrf_token %}
+                {{ form.as_p }}
+                <div class="form-group row ">
+                    <label class="col-sm-2 col-form-label "></label>
+                    <div class="col-sm-12">
+                        <button type="submit" class="btn btn-block btn-info">Registration</button>
+                    </div>
+
+                </div>
+            </form>
+            <p>if you have already an account<a class="center" href="{% url 'login-url' %}">Login</a></p>
+        </div>
+    </div>
+{% endblock %}

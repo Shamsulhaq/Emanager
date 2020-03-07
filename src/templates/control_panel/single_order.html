@@ -1,0 +1,119 @@
+{% extends 'control_panel/base/base.html' %}
+{% block content %}
+    <div class="card-deck">
+        <div class="card" style="width: 18rem;">
+            <div class="card-header ">
+                Order Info
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Order# : {{ obj.order_id }}</li>
+                <li class="list-group-item">Shipping Method : {{ obj.shipping_method.get_method_display }}</li>
+                <li class="list-group-item">Shipping Status : {{ obj.get_status_display }}
+                <a class="mr-auto" data-toggle="collapse" data-target="#collapseExample"
+                        aria-expanded="false" aria-controls="collapseExample">
+                    <i class="fas fa-edit"></i>
+                </a>
+                </li>
+                <div class="collapse" id="collapseExample">
+                    <li class="list-group-item"><form action="" method="POST">{% csrf_token %}
+                    {{ form }}
+                    <button type="submit"><i class="fas fa-check-circle"></i></button>
+                </form></li>
+                </div>
+                <li class="list-group-item">Shipping Charge : {{ obj.shipping_total }} Tk</li>
+                <li class="list-group-item">Total Amount : {{ obj.total }} Tk</li>
+                <li class="list-group-item">Create At : {{ obj.timestamp|date }}</li>
+                <li class="list-group-item">Update At : {{ obj.update|timesince }}</li>
+                <li class="list-group-item">Active: {{ obj.active }}</li>
+            </ul>
+        </div>
+        <div class="card" style="width: 18rem;">
+            <div class="card-header ">
+                Customer Info
+            </div>
+            <ul class="list-group list-group-flush bg-info">
+                <li class="list-group-item">Name : {{ obj.billing_profile.full_name }}</li>
+                <li class="list-group-item">Phone : {{ obj.billing_profile.phone }}</li>
+                <li class="list-group-item">Email : {{ obj.billing_profile.email }}</li>
+                <li class="list-group-item">NID : {{ obj.billing_profile.nid }}</li>
+                <li class="list-group-item">Verify: {{ obj.billing_profile.verify }}</li>
+                <li class="list-group-item">Create At : {{ obj.billing_profile.timestamp|date }}</li>
+                <li class="list-group-item">Update At : {{ obj.billing_profile.update|timesince }}</li>
+                <li class="list-group-item">Active: {{ obj.billing_profile.active }}</li>
+            </ul>
+        </div>
+    </div>
+    {% if obj.billing_address.exist %}
+    <div class="card-deck mt-2">
+        <div class="card" style="width: 18rem;">
+            <div class="card-header ">
+                Address Info (Billing)
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Full Name: {{ obj.billing_address.full_name }}</li>
+                <li class="list-group-item">Phone: {{ obj.billing_address.phone }}</li>
+                <li class="list-group-item">Address line 1 : {{ obj.billing_address.address_line_1 }}</li>
+                <li class="list-group-item">Postal Code: {{ obj.billing_address.postal_code }}</li>
+                <li class="list-group-item">City : {{ obj.billing_address.city }}</li>
+                <li class="list-group-item">Country : {{ obj.billing_address.country }}</li>
+                <li class="list-group-item">Active: {{ obj.billing_address.active }}</li>
+            </ul>
+        </div>
+    {% endif %}
+        {% if obj.shipping_address.exist %}
+            <div class="card" style="width: 18rem;">
+                <div class="card-header ">
+                    Address Info (Shipping)
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Full Name: {{ obj.shipping_address.full_name }}</li>
+                    <li class="list-group-item">Phone: {{ obj.shipping_address.phone }}</li>
+                    <li class="list-group-item">Address line 1 : {{ obj.shipping_address.address_line_1 }}</li>
+                    <li class="list-group-item">Postal Code: {{ obj.shipping_address.postal_code }}</li>
+                    <li class="list-group-item">City : {{ obj.shipping_address.city }}</li>
+                    <li class="list-group-item">Country : {{ obj.shipping_address.country }}</li>
+                    <li class="list-group-item">Active: {{ obj.shipping_address.active }}</li>
+                </ul>
+            </div>
+        {% else %}
+            <div class="card" style="width: 18rem;">
+                <div class="card-header ">
+                    Cart Info
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Cart Items : {{ cart_obj.count }}</li>
+                    {% for book in cart_obj %}
+                        <li class="list-group-item"><img width="40px" src="{{ book.product.image.url }}">
+                             {{ book.product.name }}
+                            Price: {{ book.price }} Tk
+                            <hr>
+                            Quantity: {{ book.quantity }}pics
+                            <hr>
+                            Total: {{ book.item_total }}TK</li>
+                    {% endfor %}
+                    <li class="list-group-item">Total : {{ obj.cart_total }} Tk</li>
+                </ul>
+            </div>
+        {% endif %}
+    </div>
+    {% if obj.shipping_address %}
+        <div class="card-deck mt-2">
+            <div class="card" style="width: 18rem;">
+                <div class="card-header ">
+                    Cart Info
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Cart Items : {{ obj.cart.books.count }}</li>
+                    {% for book in obj.cart.books.all %}
+                        <li class="list-group-item"><img width="40px" src="{{ book.image.url }}">
+                            <p> {{ book.name }}</p>
+                            <p>{{ book.price }} Tk</p></li>
+                    {% endfor %}
+                    <li class="list-group-item">Sub Total: {{ obj.cart.sub_total }} Tk</li>
+                    <li class="list-group-item">VAT: {{ obj.cart.get_vat }} Tk</li>
+                    <li class="list-group-item">Total : {{ obj.cart.total }} Tk</li>
+                </ul>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

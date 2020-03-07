@@ -1,0 +1,52 @@
+{% extends 'control_panel/base/base.html' %}
+{% block content %}
+    {% if object %}
+        <table class="table table-hover " style="cursor: pointer;">
+            <thead class="thead-light ">
+            <tr>
+                <th>Order #</th>
+                <th>Date</th>
+                <th>How Long</th>
+                <th>Last View</th>
+                <th>Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for order in object %}
+
+                <tr onclick="window.location.href='{% url 'order_admin_single_order_url' id=order.id %}'">
+                    <td>{{ order.order_id }}</td>
+                    <td>{{ order.timestamp|date }}</td>
+                    <td>{{ order.timestamp|timesince }}</td>
+                    <td>{{ order.update|timesince }}</td>
+                    <td>{{ order.get_status_display }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+    {% else %}
+        <p class="text-center">Book List is Empty </p>
+    {% endif %}
+    {% if object.has_other_pages %}
+        <div class="pagination justify-content-center bg-info">
+    <span class="step-links">
+        {% if object.has_previous %}
+            <a href="?page={{ object.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ object.number }} of {{ object.paginator.num_pages }}.
+        </span>
+
+        {% if object.has_next %}
+            <a href="?page={{ object.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+        </div>
+    {% endif %}
+{#    {% if page_obj.exists %}#}
+{#        {% include 'include_html/pagination.html' %}#}
+{#    {% endif %}#}
+
+{% endblock %}
